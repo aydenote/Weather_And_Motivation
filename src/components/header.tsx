@@ -18,8 +18,11 @@ export default function Header() {
           <Link href="/schedule" className="mr-5 hover:text-gray-900">
             일정
           </Link>
+          <Link href="/analysis" className="mr-5 hover:text-gray-900">
+            분석
+          </Link>
           <Link href="/contact" className="mr-5 hover:text-gray-900">
-            연락하기
+            연락
           </Link>
         </nav>
         <DarkModeToggleButton />
