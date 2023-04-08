@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image'
+import DarkModeToggleButton from './dark-mode-toggle-button';
 import logoSrc from '../../public/logo.svg'
 
 export default function Header() {
@@ -21,6 +22,7 @@ export default function Header() {
             연락하기
           </Link>
         </nav>
+        <DarkModeToggleButton />
       </div>
     </header>
   );
