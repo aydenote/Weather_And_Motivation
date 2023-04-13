@@ -1,26 +1,20 @@
 import { useEffect, useState } from 'react';
 import { MainAnimation } from '@/components/animation';
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, getDoc, doc } from "firebase/firestore";
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth, db } from '../../../firebase';
 import { loginType } from '../../../type';
+import { useDispatch } from 'react-redux';
+import { setTodos } from '@/redux/todo';
 
-export default function Hero() {
+export default function Main() {
   const [token, setToken] = useState<string | null>(null);
+  const dispatch = useDispatch();
 
-  /** firestore에 계정 컬렉션 추가 함수*/
+  /** firestore에 계정 컬렉션 추가 함수 */
   async function addDatabase() {
     try {
-      const docRef = await addDoc(collection(db, "users"), {
-        todoList: [
-          {
-            state: "",
-            text: "",
-            completeDate: ""
-          }
-        ]
-      }
-      );
+      const docRef = await addDoc(collection(db, "users"), {});
       console.log("Document written with ID: ", docRef.id);
       localStorage.setItem("dbId", docRef.id);
     } catch (error) {
@@ -28,6 +22,16 @@ export default function Hero() {
     }
   }
 
+  /** firestore에 있는 todo를 redux state에 저장 */
+  async function fetchTodos() {
+    const dbId = localStorage.getItem('dbId');
+    if (dbId) {
+      const userRef = doc(db, "users", dbId);
+      const userSnapshot = await getDoc(userRef);
+      const userData = await userSnapshot.data();
+      userData && dispatch(setTodos(userData.todos))
+    }
+  }
 
   /** 구글 로그인 함수 */
   async function handleLogin() {
@@ -36,7 +40,7 @@ export default function Hero() {
     const userInfo = signIn.user as loginType;
     userInfo.accessToken && localStorage.setItem('token', userInfo.accessToken);
     setToken(localStorage.getItem('token'));
-    !localStorage.getItem('dbId') && addDatabase();
+    localStorage.getItem('dbId') ? fetchTodos() : addDatabase();
   }
 
   useEffect(() => {
