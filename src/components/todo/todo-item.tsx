@@ -17,7 +17,7 @@ export default function TodoItem() {
   function handleAddTodo(event: React.FormEvent) {
     event.preventDefault()
     const todoText = (document.querySelector('input') as HTMLInputElement);
-    todoText.value && dispatch(addTodo({ id: newId, text: todoText.value, completed: false, completeDate: '' }));
+    todoText.value && dispatch(addTodo({ id: newId, text: todoText.value, completed: false, completeDate: '', weather: '' }));
     todoText.value = '';
   }
 

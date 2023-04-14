@@ -9,6 +9,7 @@ export type todoType = {
   text: string;
   completed: boolean;
   completeDate: string;
+  weather: string;
 };
 
 export type todosState = {
