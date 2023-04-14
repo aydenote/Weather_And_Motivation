@@ -58,7 +58,7 @@ export default function TodoItem() {
             </form>
           </div>
           <ul>
-            {todoList.map((todo: todoType) => (
+            {todoList.filter(todo => !todo.completed).map((todo: todoType) => (
               <li key={todo.id} className="border-b py-4 flex items-center justify-between">
                 <div className="flex-grow mr-4">
                   <p className="w-full py-1 border-b border-gray-400 focus:border-indigo-500 focus:outline-none">{todo.text}</p>
@@ -78,8 +78,7 @@ export default function TodoItem() {
                   삭제
                 </button>
               </li>
-            ))
-            }
+            ))}
           </ul>
         </div>
       </div >
