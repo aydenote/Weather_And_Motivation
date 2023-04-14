@@ -49,8 +49,10 @@ export default function TodoItem() {
       <Header />
       <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100">
         <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col w-full md:w-1/2 lg:w-1/3">
-          <h1 className="text-3xl font-bold mb-6 text-gray-800">일정 관리</h1>
-          <button type='button' className="px-2 py-1 text-sm font-semibold text-gray-700 border rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500" onClick={() => handleSaveTodo()}>저장</button>
+          <div className='flex justify-between'>
+            <h1 className="text-3xl font-bold mb-6 text-gray-800">일정 관리</h1>
+            <button type='button' className="h-10 px-2 py-1 text-sm font-semibold text-gray-700 border rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500" onClick={() => handleSaveTodo()}>저장</button>
+          </div>
           <div className="relative">
             <form onSubmit={handleAddTodo}>
               <input type="text" placeholder="일정을 추가해주세요!"
