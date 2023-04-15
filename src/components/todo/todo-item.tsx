@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { todoType, todosState } from '../../../type';
+import { todoType, todosState, weatherSkyType } from '../../../type';
 import { addTodo, deleteTodo, toggleTodo } from '@/redux/todo';
 import { v4 as uuidv4 } from 'uuid';
-import { collection, doc, updateDoc } from 'firebase/firestore';
-
+import { getForecast } from '@/pages/api/weather';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '../../../firebase';
 import Header from '../header';
 import Footer from '../footer';
-import { db } from '../../../firebase';
 
 export default function TodoItem() {
   const todoList = useSelector((state: todosState) => state.todos);
@@ -17,17 +17,27 @@ export default function TodoItem() {
   function handleAddTodo(event: React.FormEvent) {
     event.preventDefault()
     const todoText = (document.querySelector('input') as HTMLInputElement);
-    todoText.value && dispatch(addTodo({ id: newId, text: todoText.value, completed: false, completeDate: '', weather: '' }));
+    todoText.value && dispatch(addTodo({ id: newId, text: todoText.value, completed: false, completeDate: '', weather: "" }));
     todoText.value = '';
   }
 
-  /** 일정 상태 변경 */
-  function handleCompleteTodo(dataId: string) {
+  /** 일정 완료 후 날씨 데이터 저장 */
+  async function handleCompleteTodo(dataId: string) {
     const date = new Date().toLocaleDateString()
     const [year, month, day] = date.split('.').map((str) => str.trim().padStart(2, '0'));
     const formattedDate = `${year}${month}${day}`;
-    dataId && dispatch(toggleTodo({ id: dataId, completeDate: formattedDate }))
+    const forecastRes = await getForecast(formattedDate);
+    // 기상청 날씨 예보 여부
+    if (forecastRes.data.response.body) {
+      const weatherData = await forecastRes.data.response.body.items.item;
+      // fcstValue : 맑음("1"), 기타("2"), 구름많음("3"), 흐림("4") 
+      const skyData = (weatherData.filter((item: weatherSkyType) => item.category === 'SKY'))[0].fcstValue;
+      dataId && dispatch(toggleTodo({ id: dataId, completeDate: formattedDate, weather: skyData }))
+    } else {
+      dataId && dispatch(toggleTodo({ id: dataId, completeDate: formattedDate, weather: '2' }))
+    }
   }
+
 
   /** 일정 삭제 */
   function handleDeleteTodo(dataId: string) {
@@ -41,7 +51,6 @@ export default function TodoItem() {
       const userDocRef = doc(db, 'users', dbId);
       await updateDoc(userDocRef, { todos: todoList });
     }
-
   }
 
   return (
@@ -53,6 +62,7 @@ export default function TodoItem() {
             <h1 className="text-3xl font-bold mb-6 text-gray-800">일정 관리</h1>
             <button type='button' className="h-10 px-2 py-1 text-sm font-semibold text-gray-700 border rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500" onClick={() => handleSaveTodo()}>저장</button>
           </div>
+          <small className='mb-2 text-right'>일정을 추가하고 저장을 눌러야 분석이 가능합니다.</small>
           <div className="relative">
             <form onSubmit={handleAddTodo}>
               <input type="text" placeholder="일정을 추가해주세요!"
