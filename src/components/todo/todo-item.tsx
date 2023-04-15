@@ -62,7 +62,7 @@ export default function TodoItem() {
             <h1 className="text-3xl font-bold mb-6 text-gray-800">일정 관리</h1>
             <button type='button' className="h-10 px-2 py-1 text-sm font-semibold text-gray-700 border rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500" onClick={() => handleSaveTodo()}>저장</button>
           </div>
-          <small className='mb-2 text-right'>일정 추가 및 삭제 후 꼭! 저장 버튼을 눌러주세요.</small>
+          <small className='mb-2 text-right'>일정 추가 및 삭제 후 저장 버튼을 눌러주세요.</small>
           <div className="relative">
             <form onSubmit={handleAddTodo}>
               <input type="text" placeholder="일정을 추가해주세요!"
