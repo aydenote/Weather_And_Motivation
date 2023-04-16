@@ -1,10 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { setTodos } from '@/redux/todo';
 import { todoType, todosState } from '../../type';
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import Footer from '@/components/footer'
 import Header from '@/components/header'
+import Chart from '@/components/analysis/chart';
+import { useEffect } from 'react';
 
 export default function Analysis() {
   const todoList = useSelector((state: todosState) => state.todos);
@@ -20,6 +22,21 @@ export default function Analysis() {
     }
     dispatch(setTodos(incompleteTodos))
   }
+
+  /** firestore에 있는 todo를 redux state에 저장 */
+  async function fetchTodos() {
+    const dbId = localStorage.getItem('dbId');
+    if (dbId) {
+      const userRef = doc(db, "users", dbId);
+      const userSnapshot = await getDoc(userRef);
+      const userData = await userSnapshot.data();
+      userData && dispatch(setTodos(userData.todos))
+    }
+  }
+
+  useEffect(() => {
+    fetchTodos()
+  }, [])
 
   return (
     todoList && <>
@@ -152,6 +169,7 @@ export default function Analysis() {
             </div>
           </div>
         </section>
+        {todoList.filter(todo => todo.completed === true).length >= 1 && <Chart />}
       </div>
       <Footer />
     </>
