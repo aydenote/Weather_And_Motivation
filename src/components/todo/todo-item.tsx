@@ -1,14 +1,17 @@
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { todoType, todosState, weatherSkyType } from '../../../type';
-import { addTodo, deleteTodo, toggleTodo } from '@/redux/todo';
+import { addTodo, deleteTodo, setTodos, toggleTodo } from '@/redux/todo';
 import { v4 as uuidv4 } from 'uuid';
 import { getForecast } from '@/pages/api/weather';
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import Header from '../header';
 import Footer from '../footer';
+import Modal from '../modal';
 
 export default function TodoItem() {
+  const [modal, setModal] = useState<boolean>(false)
   const todoList = useSelector((state: todosState) => state.todos);
   const dispatch = useDispatch()
   const newId = uuidv4();
@@ -51,18 +54,35 @@ export default function TodoItem() {
       const userDocRef = doc(db, 'users', dbId);
       await updateDoc(userDocRef, { todos: todoList });
     }
+    setModal(true)
   }
+
+  /** firestore에 있는 todo를 redux state에 저장 */
+  async function fetchTodos() {
+    const dbId = localStorage.getItem('dbId');
+    if (dbId) {
+      const userRef = doc(db, "users", dbId);
+      const userSnapshot = await getDoc(userRef);
+      const userData = await userSnapshot.data();
+      userData && dispatch(setTodos(userData.todos))
+    }
+  }
+
+  useEffect(() => {
+    fetchTodos()
+  }, [])
+
 
   return (
     <>
       <Header />
-      <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100">
+      <div className={`min-h-screen flex flex-col justify-center items-center bg-gray-100`}>
         <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col w-full md:w-1/2 lg:w-1/3">
           <div className='flex justify-between'>
             <h1 className="text-3xl font-bold mb-6 text-gray-800">일정 관리</h1>
             <button type='button' className="h-10 px-2 py-1 text-sm font-semibold text-gray-700 border rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500" onClick={() => handleSaveTodo()}>저장</button>
           </div>
-          <small className='mb-2 text-right'>일정 추가 및 삭제 후 저장 버튼을 눌러주세요.</small>
+          <small className='mb-2 text-right text-red-500'>일정 추가 및 삭제 후 저장 버튼을 눌러주세요.</small>
           <div className="relative">
             <form onSubmit={handleAddTodo}>
               <input type="text" placeholder="일정을 추가해주세요!"
@@ -94,6 +114,7 @@ export default function TodoItem() {
           </ul>
         </div>
       </div >
+      {modal && <Modal setModal={setModal} />}
       <Footer />
     </>
   )
