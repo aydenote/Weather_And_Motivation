@@ -1,15 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
 import logger from 'redux-logger';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { todoType, todosState, toggleType } from '../../type';
-
-const persistConfig = {
-  key: 'todo',
-  storage,
-  whitelist: ['todos'],
-};
 
 const initialState: todosState = {
   todos: [],
@@ -43,11 +35,9 @@ const todosSlice = createSlice({
   },
 });
 
-const persistedReducer = persistReducer(persistConfig, todosSlice.reducer);
-
 export const { setTodos, addTodo, toggleTodo, deleteTodo } = todosSlice.actions;
 
 export default configureStore({
-  reducer: persistedReducer,
-  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(logger),
+  reducer: todosSlice.reducer,
+  middleware: [logger],
 });
