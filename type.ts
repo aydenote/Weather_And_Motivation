@@ -4,7 +4,7 @@ export type loginType = {
   displayName: string;
 };
 
-// fcstValue : 맑음("1"), 구름많음("3"), 흐림("4")
+// fcstValue : 맑음("1"), 기타("2"), 구름("3"), 흐림("4")
 export type todoType = {
   id: string;
   text: string;
