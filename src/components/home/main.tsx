@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { MainAnimation } from '@/components/animation';
-import { collection, addDoc, getDoc, doc } from "firebase/firestore";
+import { collection, addDoc, getDoc, doc, updateDoc } from "firebase/firestore";
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth, db } from '../../../firebase';
 import { loginType } from '../../../type';
@@ -15,6 +15,7 @@ export default function Main() {
   async function addDatabase() {
     try {
       const docRef = await addDoc(collection(db, "users"), {});
+      await updateDoc(docRef, { todos: [] });
       console.log("Document written with ID: ", docRef.id);
       localStorage.setItem("dbId", docRef.id);
     } catch (error) {
