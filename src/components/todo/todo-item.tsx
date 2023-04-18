@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { todoType, todosState, weatherSkyType } from '../../../type';
 import { addTodo, deleteTodo, setTodos, toggleTodo } from '@/redux/todo';
@@ -9,6 +9,7 @@ import { db } from '../../../firebase';
 import Header from '../header';
 import Footer from '../footer';
 import Modal from '../modal';
+
 
 export default function TodoItem() {
   const [modal, setModal] = useState<boolean>(false)
@@ -57,22 +58,6 @@ export default function TodoItem() {
     setModal(true)
   }
 
-  /** firestore에 있는 todo를 redux state에 저장 */
-  async function fetchTodos() {
-    const dbId = localStorage.getItem('dbId');
-    if (dbId) {
-      const userRef = doc(db, "users", dbId);
-      const userSnapshot = await getDoc(userRef);
-      const userData = await userSnapshot.data();
-      userData && dispatch(setTodos(userData.todos))
-    }
-  }
-
-  useEffect(() => {
-    fetchTodos()
-  }, [])
-
-
   return (
     <>
       <Header />
@@ -119,3 +104,5 @@ export default function TodoItem() {
     </>
   )
 };
+
+
