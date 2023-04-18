@@ -24,22 +24,22 @@ export default function Analysis() {
   }
 
   /** firestore에 있는 todo를 redux state에 저장 */
-  async function fetchTodos() {
-    const dbId = localStorage.getItem('dbId');
-    if (dbId) {
-      const userRef = doc(db, "users", dbId);
-      const userSnapshot = await getDoc(userRef);
-      const userData = await userSnapshot.data();
-      userData && dispatch(setTodos(userData.todos))
-    }
+  async function fetchTodos(dispatch: any, dbId: string) {
+    const userRef = doc(db, "users", dbId);
+    const userSnapshot = await getDoc(userRef);
+    const userData = await userSnapshot.data();
+    userData && dispatch(setTodos(userData.todos));
   }
 
   useEffect(() => {
-    fetchTodos()
-  }, [])
+    const dbId = localStorage.getItem('dbId');
+    if (dbId) {
+      fetchTodos(dispatch, dbId);
+    }
+  }, [dispatch]);
 
   return (
-    todoList && <>
+    todoList.length >= 1 && <>
       <Header />
       <div className="container my-24 px-6 mx-auto">
         <section className="mb-32 text-gray-800">
