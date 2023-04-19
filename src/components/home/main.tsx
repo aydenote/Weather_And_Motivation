@@ -58,7 +58,7 @@ export default function Main() {
         <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">
           안녕하세요.
           <br className="hidden lg:inline-block" />
-          신입 프론트엔드 개발자 최승수입니다.
+          날씨와 의욕 프로젝트입니다.
         </h1>
         <p className="mb-8 leading-relaxed">
           화창하고 밝은 날씨가 좋은 사람이 있고 비 오고 어두운 날씨를 좋아하는 사람이 있습니다.
