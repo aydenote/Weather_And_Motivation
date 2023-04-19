@@ -5,7 +5,7 @@ import { ThemeProvider } from 'next-themes';
 
 export default function Home() {
   return (
-    <ThemeProvider>
+    <ThemeProvider defaultTheme="light">
       <Layout>
         <Head>
           <title>Weather And Motivation</title>
