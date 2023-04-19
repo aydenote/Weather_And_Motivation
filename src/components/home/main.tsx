@@ -44,6 +44,11 @@ export default function Main() {
     localStorage.getItem('dbId') ? fetchTodos() : addDatabase();
   }
 
+  function handleLogout() {
+    localStorage.removeItem('token');
+    setToken(null)
+  }
+
   useEffect(() => {
     setToken(localStorage.getItem('token'));
   }, [])
@@ -61,7 +66,7 @@ export default function Main() {
           본인이 어느 유형인지 파악해보세요!
         </p>
         <div className="flex justify-center">
-          {!token && <button className="btn-project" onClick={handleLogin}>구글 계정으로 로그인</button>}
+          {token ? <button className="btn-project" onClick={handleLogout}>로그아웃</button> : <button className="btn-project" onClick={handleLogin}>구글 계정으로 로그인</button>}
         </div>
       </div>
       <div className="lg:max-w-lg lg:w-full md:w-1/2 w-5/6">
