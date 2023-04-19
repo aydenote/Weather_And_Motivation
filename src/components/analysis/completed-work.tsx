@@ -24,7 +24,7 @@ export default function CompletedWork() {
   }
 
   return (
-    <ThemeProvider>
+    <ThemeProvider defaultTheme="light">
       <Header />
       <div className="container my-24 px-6 mx-auto">
         <section className="mb-32 text-gray-800">

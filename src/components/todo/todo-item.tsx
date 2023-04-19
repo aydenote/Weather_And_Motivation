@@ -60,7 +60,7 @@ export default function TodoItem() {
   }
 
   return (
-    <ThemeProvider>
+    <ThemeProvider defaultTheme="light">
       <Header />
       <div className={`min-h-screen flex flex-col justify-center items-center bg-gray-100 dark:bg-black`}>
         <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col w-full md:w-1/2 lg:w-1/3">
