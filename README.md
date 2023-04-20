@@ -3,7 +3,7 @@
 [![React Version](https://img.shields.io/badge/Next-v13.3.0-blue)](https://ko.reactjs.org/)
 [![Package Manager Version](https://img.shields.io/badge/npm-v6.14.17-yellow)](https://www.npmjs.com/)
 
-어떤 날씨에는 일이 잘 진행되고 어떤 날씨에는 조금 더딘 느낌을 받아 어떤 날씨에 의욕적인지 자신의 타입을 알아보자는 아이디어에서 시작한 프로젝트입니다.
+어떤 날씨에는 일이 잘 진행되고 어떤 날씨에는 조금 더딘 날이 있습니다. 일정을 생성하고 관리함으로써 어떤 날씨에 의욕적이고 활동적인지 통계를 통해 확인해 보고 싶어 만든 프로젝트입니다.
 
 ## 📅 기간
 
