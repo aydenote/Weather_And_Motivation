@@ -71,7 +71,7 @@ export default function TodoItem() {
           <small className='mb-2 text-right text-red-500'>일정 추가 및 삭제 후 저장 버튼을 눌러주세요.</small>
           <div className="relative">
             <form onSubmit={handleAddTodo}>
-              <input type="text" placeholder="일정을 추가해주세요!"
+              <input type="text" placeholder="Enter를 입력해 일정을 추가해주세요!"
                 className="w-full px-2 py-3 border rounded outline-none border-grey-600" />
             </form>
           </div>
