@@ -72,7 +72,7 @@ export default function Chart() {
   };
 
   return (
-    <div className='m-auto'>
+    <div className='max-w-lg m-auto'>
       <h1 className='text-3xl font-bold text-center mb-12 dark:text-white'>완료 일정 차트</h1>
       <h2 className='text-2xl text-right'>막대 차트</h2>
       <Bar className='mb-20' data={data} options={barOptions} />
